@@ -1,5 +1,45 @@
 <MainGrid>
-    cols: 1
-    Button:
-        text: 'Test Request'
-        on_press: root.test_request()
+    orientation: 'vertical'
+    size_hint: (1,1)
+    padding: 10
+    Label:
+        text: 'Weather App'
+        font_size: 30
+        size_hint_y: None
+        size_hint: (1, 0.1)
+    Label:
+        id: cityName
+        font_size: 20
+        size_hint_y: None
+        size_hint: (1, 0.1)
+    GridLayout:
+        cols: 2
+        size_hint_y: None
+        size_hint: (1, 0.7)
+        Label:
+            text: 'temperature'
+            font_size: 20
+        Label:
+            id: temperature
+            font_size: 20
+        Label:
+            text: 'humidity'
+            font_size: 20
+        Label:
+            id: humidity
+            font_size: 20
+        Label:
+            text: 'Clouds'
+            font_size: 20
+        Label:
+            id: clouds
+            font_size: 20
+    GridLayout:
+        cols: 2
+        size_hint_y: None
+        size_hint: (1, 0.1)
+        Button:
+            text: 'Test Request'
+            on_press: root.test_request()
+        Button:
+            text: 'Menu or something' # I will have to figure out the design of the app first
