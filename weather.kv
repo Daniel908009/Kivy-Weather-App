@@ -1,15 +1,24 @@
+<Label>: # default setting for all labels
+    font_size: 20
+    color: (0.5,0.5,0.5,1)
+
 <MainGrid>
     orientation: 'vertical'
     size_hint: (1,1)
     padding: 10
+    cities: []
+    currentCity: None
     Label:
         text: 'Weather App'
+        color: (1,1,1,1)
+        bold: True
+        outline_color: (0,0,1,1)
+        outline_width: 1
         font_size: 30
         size_hint_y: None
         size_hint: (1, 0.1)
     Label:
         id: cityName
-        font_size: 20
         size_hint_y: None
         size_hint: (1, 0.1)
     GridLayout:
@@ -18,28 +27,133 @@
         size_hint: (1, 0.7)
         Label:
             text: 'temperature'
-            font_size: 20
         Label:
             id: temperature
-            font_size: 20
         Label:
             text: 'humidity'
-            font_size: 20
         Label:
             id: humidity
-            font_size: 20
         Label:
             text: 'Clouds'
-            font_size: 20
         Label:
             id: clouds
-            font_size: 20
     GridLayout:
         cols: 2
         size_hint_y: None
         size_hint: (1, 0.1)
         Button:
-            text: 'Test Request'
-            on_press: root.test_request()
+            text: 'Add a City'
+            on_press: root.addCity()
         Button:
-            text: 'Menu or something' # I will have to figure out the design of the app first
+            text: 'List of all cities'
+            on_press: root.listOfCitiesPopup()
+
+
+<ListOfCitiesPopup>
+    caller: None
+    size_hint: (0.8, 0.8)
+    auto_dismiss: False
+    title: 'List of Cities'
+    BoxLayout:
+        orientation: 'vertical'
+        ScrollView:
+            GridLayout:
+                id: cityList
+                cols: 1
+                size_hint_y: None
+                height: 0
+        GridLayout:
+            cols: 2
+            size_hint_y: None
+            size_hint: (1, 0.1)
+            Button:
+                text: 'Delete All Cities'
+                on_press: root.deleteAllCities()
+            Button:
+                text: 'Close'
+                on_press: root.dismiss()
+
+<ConfirmPopup>
+    caller: None
+    size_hint: (0.4, 0.4)
+    auto_dismiss: False
+    title: 'Confirm Popup'
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Are you sure?'
+            size_hint_y: None
+            size_hint: (1, 0.7)
+        GridLayout:
+            cols: 2
+            size_hint_y: None
+            size_hint: (1, 0.3)
+            Button:
+                text: 'No'
+                background_color: (0,1,0,1)
+                font_size: 15
+                on_press: root.no()
+            Button:
+                text: 'Yes'
+                background_color: (1,0,0,1)
+                font_size: 15
+                on_press: root.yes()
+
+<AddCityPopup>
+    caller: None
+    size_hint: (0.7, 0.7)
+    auto_dismiss: False
+    title: 'Add a City'
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: None
+        size_hint: (1, 0.9)
+        padding: 10
+        GridLayout:
+            cols: 3
+            size_hint_y: None
+            size_hint: (1, 0.6)
+            padding: 10
+            Label:
+                text: 'City Name'
+            TextInput:
+                id: cityName
+            Spinner:
+                id: historySpinner
+                text: 'H'
+                values: ['H', 'M', 'L'] # later will be used to show the history of added cities
+            Label:
+                text: 'Country'
+            TextInput:
+                id: country
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            size_hint: (1, 0.2)
+            padding: 10
+            Button:
+                text: 'Add'
+                on_press: root.addCity()
+        Button:
+            text: 'Close'
+            size_hint_y: None
+            size_hint: (1, 0.1)
+            on_press: root.dismiss()
+
+<CityWidget>
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: 50
+    padding: 10
+    background_color: (0.8,0.8,0.8,1)
+    caller: None
+    Label:
+        id: cityName
+    Label:
+        id: country
+    Button:
+        text: 'Delete'
+        on_press: root.deleteCity()
+    CheckBox:
+        id: isCurrentCity
+        on_active: root.setCurrentCity()
