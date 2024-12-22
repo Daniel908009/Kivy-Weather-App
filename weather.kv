@@ -8,7 +8,16 @@
     padding: 10
     cities: []
     currentCity: ''
+    weather: ""
+    sunset: 0
+    sunrise: 0
+    timeIn: 0
     on_kv_post: root.setup()
+    canvas.before:
+        Rectangle:
+            source: 'storm.jpg'
+            size: self.size
+            pos: self.pos
     Label:
         text: 'Weather App'
         color: (1,1,1,1)
