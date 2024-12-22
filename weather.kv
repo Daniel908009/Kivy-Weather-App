@@ -7,7 +7,8 @@
     size_hint: (1,1)
     padding: 10
     cities: []
-    currentCity: None
+    currentCity: ''
+    on_kv_post: root.setup()
     Label:
         text: 'Weather App'
         color: (1,1,1,1)
@@ -30,13 +31,13 @@
         Label:
             id: temperature
         Label:
+            text: 'weather'
+        Label:
+            id: weather
+        Label:
             text: 'humidity'
         Label:
             id: humidity
-        Label:
-            text: 'Clouds'
-        Label:
-            id: clouds
     GridLayout:
         cols: 2
         size_hint_y: None
@@ -47,10 +48,6 @@
         Button:
             text: 'List of all cities'
             on_press: root.listOfCitiesPopup()
-        Button:
-            text: 'Just for testing'
-            on_press: root.test_request()
-
 
 <ListOfCitiesPopup>
     caller: None
