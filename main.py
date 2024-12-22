@@ -9,11 +9,19 @@ WEATHERAPI = "" # used to get the weather data
 CITYAPI = "" # used to get the coordinates of a city
 
 def get_weather(city):
-    lon, lat = 14.4378, 50.0755 # will later be replaced with the actual coordinates from a city entered by the user
-    response = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={WEATHERAPI}")
-    if response.status_code == 200:
-        data = response.json()
-        print(data)
+    lon, lat = 0, 0
+    cityResponse = requests.get(f"https://api.opencagedata.com/geocode/v1/json?key={CITYAPI}&q={city}")
+    if cityResponse.status_code == 200:
+        cityData = cityResponse.json()
+        lon = cityData["results"][0]["geometry"]["lng"]
+        lat = cityData["results"][0]["geometry"]["lat"]
+        #print(cityData)
+        response = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={WEATHERAPI}")
+        if response.status_code == 200:
+            data = response.json()
+            print(data)
+        else:
+            print("Error in fetching the data")
     else:
         print("Error in fetching the data")
 
@@ -47,8 +55,8 @@ class ListOfCitiesPopup(Popup):
         pass
     def addCities(self):
         self.ids.cityList.height = 0
-        for object in self.caller.cities:
-            self.ids.cityList.add_widget(CityWidget(object[0],object[1], self))
+        for city in self.caller.cities:
+            self.ids.cityList.add_widget(CityWidget(city, self))
             self.ids.cityList.height += 50
 
 class AddCityPopup(Popup):
@@ -56,22 +64,21 @@ class AddCityPopup(Popup):
         super().__init__()
         self.caller = caller
     def addCity(self):
-        self.caller.cities.append([self.ids.cityName.text, self.ids.country.text])
+        self.caller.cities.append(self.ids.cityName.text)
         self.dismiss()
 
 class CityWidget(BoxLayout):
-    def __init__(self, city, country, caller):
+    def __init__(self, city, caller):
         super().__init__()
         self.id = "cityWidget"
         self.ids.cityName.text = city
-        self.ids.country.text = country
         self.caller = caller
     def deleteCity(self):
         popup = ConfirmPopup(self)
         popup.open()
     def yes(self):
         self.caller.ids.cityList.remove_widget(self)
-        self.caller.caller.cities.remove([self.ids.cityName.text, self.ids.country.text])
+        self.caller.caller.cities.remove(self.ids.cityName.text)
     def no(self):
         pass
     def setCurrentCity(self):
@@ -79,7 +86,7 @@ class CityWidget(BoxLayout):
 
 class MainGrid(BoxLayout):
     def test_request(self):
-        get_weather("London") # later the city will be fetched from an input field
+        get_weather("Hradec nad Moravici") # later the city will be fetched from an input field
     def addCity(self):
         popup = AddCityPopup(self)
         popup.open()

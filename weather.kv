@@ -47,6 +47,9 @@
         Button:
             text: 'List of all cities'
             on_press: root.listOfCitiesPopup()
+        Button:
+            text: 'Just for testing'
+            on_press: root.test_request()
 
 
 <ListOfCitiesPopup>
@@ -122,10 +125,6 @@
                 id: historySpinner
                 text: 'H'
                 values: ['H', 'M', 'L'] # later will be used to show the history of added cities
-            Label:
-                text: 'Country'
-            TextInput:
-                id: country
         BoxLayout:
             orientation: 'vertical'
             size_hint_y: None
@@ -149,8 +148,6 @@
     caller: None
     Label:
         id: cityName
-    Label:
-        id: country
     Button:
         text: 'Delete'
         on_press: root.deleteCity()
