@@ -1,6 +1,8 @@
 <Label>: # default setting for all labels
     font_size: 20
-    color: (0.5,0.5,0.5,1)
+    color: (1,1,1,1)
+    outline_color: (0,0,0,1)
+    outline_width: 1
 
 <MainGrid>
     orientation: 'vertical'
@@ -12,7 +14,8 @@
     sunset: 0
     sunrise: 0
     timeIn: 0
-    on_kv_post: root.setup()
+    clockEvent: None
+    on_kv_post: root.setup(True)
     canvas.before:
         Rectangle:
             source: 'storm.jpg'
@@ -27,30 +30,103 @@
         font_size: 30
         size_hint_y: None
         size_hint: (1, 0.1)
-    Label:
-        id: cityName
+    GridLayout:
+        cols: 1
         size_hint_y: None
-        size_hint: (1, 0.1)
+        size_hint: (0.7, 0.8)
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        canvas.before:
+            Color:
+                rgba: (1,1,1,0.8)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        Label:
+            id: cityName
+            font_size: 28
+            size_hint_y: None
+            size_hint: (1, 0.1)
+        GridLayout: # this entire thing could have been done better, because this way a lot of code is repeated, however it is already done so its fine
+            cols: 2
+            size_hint_y: None
+            size_hint: (1, 0.7)
+            Label:
+                text: 'temperature'
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                id: temperature
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                text: 'weather'
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                id: weather
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                text: 'Feels like'
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                id: feelsLike
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                text: 'High'
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                id: high
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                text: 'Low'
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                id: low
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                text: 'Sunrise'
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                id: sunrise
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                text: 'Sunset'
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                id: sunset
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                text: 'Wind Speed and Direction'
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                id: windSpeedDirection
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                text: 'humidity'
+                outline_width: 0
+                color: (0,0,0,1)
+            Label:
+                id: humidity
+                outline_width: 0
+                color: (0,0,0,1)
     GridLayout:
         cols: 2
         size_hint_y: None
-        size_hint: (1, 0.7)
-        Label:
-            text: 'temperature'
-        Label:
-            id: temperature
-        Label:
-            text: 'weather'
-        Label:
-            id: weather
-        Label:
-            text: 'humidity'
-        Label:
-            id: humidity
-    GridLayout:
-        cols: 2
-        size_hint_y: None
         size_hint: (1, 0.1)
+        padding: 5
         Button:
             text: 'Add a City'
             on_press: root.addCity()
@@ -77,6 +153,7 @@
             size_hint: (1, 0.1)
             Button:
                 text: 'Delete All Cities'
+                background_color: (1,0,0,1)
                 on_press: root.deleteAllCities()
             Button:
                 text: 'Close'
@@ -110,18 +187,23 @@
 
 <AddCityPopup>
     caller: None
-    size_hint: (0.7, 0.7)
+    size_hint: (0.6, 0.5)
     auto_dismiss: False
     title: 'Add a City'
     BoxLayout:
         orientation: 'vertical'
         size_hint_y: None
-        size_hint: (1, 0.9)
+        size_hint: (1, 1)
         padding: 10
+        Label:
+            text: 'Add a City'
+            font_size: 30
+            size_hint_y: None
+            size_hint: (1, 0.1)
         GridLayout:
             cols: 3
             size_hint_y: None
-            size_hint: (1, 0.6)
+            size_hint: (1, 0.1)
             padding: 10
             Label:
                 text: 'City Name'
@@ -129,21 +211,56 @@
                 id: cityName
             Spinner:
                 id: historySpinner
-                text: 'H'
-                values: ['H', 'M', 'L'] # later will be used to show the history of added cities
-        BoxLayout:
-            orientation: 'vertical'
+                text: 'History'
+                values: ['Nothing']
+                on_text: root.setTextInput()
+                on_kv_post: root.setupSpinner()
+        GridLayout:
+            cols: 3
             size_hint_y: None
-            size_hint: (1, 0.2)
+            size_hint: (1, 0.1)
             padding: 10
+            Button:
+                text: 'Set APIs'
+                on_press: root.setAPIs()
+            Button:
+                text: 'Close'
+                on_press: root.dismiss()
             Button:
                 text: 'Add'
                 on_press: root.addCity()
-        Button:
-            text: 'Close'
+
+<APIPopup>
+    title: 'API Keys'
+    size_hint: (0.8, 0.5)
+    auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: (1, 1)
+        Label:
+            text: 'API Keys'
             size_hint_y: None
             size_hint: (1, 0.1)
-            on_press: root.dismiss()
+        GridLayout:
+            cols: 2
+            size_hint_y: None
+            size_hint: (1, 0.9)
+            padding: 10
+            spacing: 10
+            Label:
+                text: 'OpenWeatherMap API Key'
+            TextInput:
+                id: openWeatherMapAPI
+            Label:
+                text: 'OpenCageData API Key'
+            TextInput:
+                id: timezoneDBAPI
+            Button:
+                text: 'Close'
+                on_press: root.dismiss()
+            Button:
+                text: 'Save'
+                on_press: root.setAPIs()
 
 <CityWidget>
     orientation: 'horizontal'
@@ -156,7 +273,41 @@
         id: cityName
     Button:
         text: 'Delete'
+        background_color: (1,0,0,1)
         on_press: root.deleteCity()
     CheckBox:
         id: isCurrentCity
-        on_active: root.setCurrentCity()
+        on_press: root.setCurrentCity()
+
+<HelpWidget>
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: 50
+    padding: 10
+    Label:
+        id: cityName
+        text: 'Name'
+        outline_width: 0
+        bold: True
+    Label:
+        text: 'Delete From List'
+        outline_width: 0
+        bold: True
+    Label:
+        text: 'Current city'
+        outline_width: 0
+        bold: True
+
+<ErrorPopup>
+    title: 'Error'
+    size_hint: (0.6, 0.4)
+    auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Error'
+        Label:
+            id: errorMessage
+        Button:
+            text: 'Close'
+            on_press: root.dismiss()
