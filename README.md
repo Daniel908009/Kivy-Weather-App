@@ -22,7 +22,7 @@
 ![image](https://github.com/user-attachments/assets/1fca8f00-9612-44ad-a4f0-66c33c0bdaeb)
 
 <h1>Download instructions</h1>
-<bold>YOU WILL NEED YOUR OWN API KEYS FROM OPENWEATHER AND OPENCAGE, BOTH ARE FREE FOR SIGN UP.</bold>
+<h1>YOU WILL NEED YOUR OWN API KEYS FROM OPENWEATHER AND OPENCAGE, BOTH ARE FREE FOR SIGN UP.</h1>
 <p>You can enter them in the set API keys popup inside the app or directly inside the main.py</p>
 *Note the links are instructional images <br>
 **Note the images used bellow are from a different Github repository, however the overall procces is allways the same. <br>
