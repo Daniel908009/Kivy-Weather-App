@@ -23,7 +23,7 @@
 
 <h1>Download instructions</h1>
 <h1>YOU WILL NEED YOUR OWN API KEYS FROM OPENWEATHER AND OPENCAGE, BOTH ARE FREE FOR SIGNING UP.</h1>
-<p>You can enter them in the set API keys popup inside the app or directly inside the main.py</p>
+<p>You can enter the keys in the set API keys popup inside the app or directly inside the main.py</p>
 *Note the links are instructional images <br>
 **Note the images used bellow are from a different Github repository, however the overall procces is allways the same. <br>
 <h2>Using graphic UI</h2>
