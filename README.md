@@ -12,6 +12,6 @@
 <p>Saving the cities, api keys and a history of searched cities in json files.</p>
 <p>A scroll view with all the cities listed.</p>
 <p>Option to delete a city from the list or delete all cities from the list.</p>
-<p>The weather updates itself automaticaly every 2 minutes.</p>
+<p>The weather updates itself automatically every 2 minutes.</p>
 
 ## Screenshots
